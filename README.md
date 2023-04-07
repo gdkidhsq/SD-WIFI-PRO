@@ -90,7 +90,72 @@ For some boards that only have a TF card holder and do not have an SPI interface
 
 ## 5. Firmware Guide
 
-TBD
+### 5.1 Access SWP by web using AP firstly
+Insert SWP into the SWP Dev Board, after power up, SWP will create a wireless access points, the AP ssid named is "SD-WIFI-PRO-RD".
+When connect wirelessly to SD-WIFI-PRO-RD, after success, you can access the SWD by web browser.
+The default AP local ip is 192.168.4.1, so usging "http://192.168.4.1" the Web address to asscess to SWP.
+
+### 5.2 Web functions
+Assuming that in the AP connected state.
+1. List files
+    Usging "http://192.168.4.1", to list all the files in the SD card of SWD(8GB high-spped memory) .
+    Click "List Files" at navigation bar will show the page when in other pages.
+2. Upload files to SWP
+    In index.htm page, at the "Update File To Server" block, select a file , click "Upload" button.
+    Click "List Files" at navigation bar will show the page when in other pages.
+3. Browse image
+    Brownse only images in imglist.htm page. 
+    Click "List Images" at navigation bar will show the page when in other pages.
+4. Setting
+    Click "WiFi Setting" at navigation bar will show the page when in other pages.
+    In wifi.htm page, at "Set Station Parameters" block, input the right network ssid and password ,can let the SWD connect to a WiFi network.
+    After do "Connect To Station", if sucessful, at "Status" block ,can find the SWD local ip, using the local ip can access SWD When SWD and your access device(such as PC) are in the above network.
+    In wifi.htm page, at "Set To AP mode" block, can change SWD into AP mode.
+
+### 5.3 Know the current network status of SWP
+Assuming that in the AP connected state.
+1. Check NW_STATUS.INI file
+    a)When access http://192.168.4.1/, the browse show a "NW_STATUS.INI" file, download the file and look at the content to check the network status.
+    b)There is other way to check the NW_STATUS.INI. Put the SWD with SD card sockets or adapter into PC, can read find NW_STATUS.INI at U disk.
+3. By wifi.htm web page
+    Access http://192.168.4.1/wifi.htm, the status output box can show the network status.
+3. By uart serial command
+    Use M53 serail command.
+    
+ There are three way to check network status, and there three way to config network too. To config network, the first way is using wifi.htm page, the second is using serial command, the third is using SETUP.INI file at SD card of SWD.  
+
+### 5.4 Using serial to get the runtime information and Config SWD network  
+1. Get the runtime information 
+    Insert SWD into SWP dev board socket, let USB cable inset to USB Type-C connector, and plug the cable inser to PC USB port.
+    Let the DIP is at the following status: switch 1 is at OFF status, switch 2 is at ON status. 
+    If SWD and dev board are OK, "USB-SERIASL CH340(COMX)" will show at Ports COM & LPT in Device Manager in Windows 10.
+    Use serial terminal to connect to SWD, the options are "115200 Baud rate, 8 data bits, 0 parity bits, 1 stop bit, No flow control".
+    If the above is OK , now you can see the information when you access web page in SWD.
+
+2. Config SWD network by serial command
+    the uart command usage as the following:
+    1)To AP Mode:
+      M49: Set the wifi AP mode , 'M49 AP' 
+      M52: Start to AP mode, 'M52'
+    2)To STA Mode:  
+      M49: Set wifi STA mode , 'M49 STA'
+      M50: Set wifi ssid , 'M50 ssid-name'
+      M51: Set wifi password , 'M51 password'
+      M52: Start to connect the wifi, 'M52'
+    3)To Show WiFi Status:
+      M53: Check wifi connection status, 'M53' 
+
+### 5.5 Config SWD netwok by SETUP.INI file as SD
+  Put SETUP.INI file in the root of the in the SD card of SWD(8GB high-spped memory) .
+  1.Config STA, input the following example content into SETUP.INI, must change the SSID and PASSWORD key content as yours.
+    WIFIMODE=STA
+    SSID=FACTORY-TEST
+    PASSWORD=?Umv870q
+  2.Config AP, input the following example content into SETUP.INI 
+    WIFIMODE=AP    
+
+### 5.6 Compile firmware
+  See the readme of the SWD firmware source code.
 
 ## 6. Part List
 
